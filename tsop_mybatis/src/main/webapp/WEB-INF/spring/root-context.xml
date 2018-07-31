@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	<bean id="dataSource" 
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<property name="driverClassName" 
+	        value="oracle.jdbc.OracleDriver"></property>
+	<property name="url" 
+	        value="jdbc:oracle:thin:@192.168.30.14:1521:xe"></property>
+	<property name="username" value="tsopMybatis"></property>
+	<property name="password" value="1234"></property>
+	</bean>	
+	
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"/>
+	</bean>
+	
+	<!-- Mapper bean등록 Impl클래스 구현까지 이걸로 해결. SqlSession bean을 안만들어도 됨.-->
+	<bean id="musicMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lectopia.tsop.mapper.MusicMapper"/>
+		<property name="sqlSessionFactory" ref="sessionFactory"/>	
+	</bean>
+	
+	<bean id="likeMusicMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lectopia.tsop.mapper.LikeMusicMapper"/>
+		<property name="sqlSessionFactory" ref="sessionFactory"/>	
+	</bean>
+	
+	<bean id="tagMusicMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lectopia.tsop.mapper.TagMusicMapper"/>
+		<property name="sqlSessionFactory" ref="sessionFactory"/>	
+	</bean>
+
+	<context:component-scan base-package="com.lectopia.tsop"></context:component-scan>
 </beans>

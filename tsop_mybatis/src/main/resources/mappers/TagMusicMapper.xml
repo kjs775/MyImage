@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lectopia.tsop.mapper.TagMusicMapper">
+
+	<resultMap type="com.lectopia.tsop.dto.TagMusicDTO" id="tagMusic">
+		<id property="tagName" column="tag_name"/>
+		<id property="fileId" column="file_id"/>
+	</resultMap>
+	
+	<insert id="addTagMusic" parameterType="tagMusic">
+		INSERT INTO tag_music_tb VALUES( #{tagName}, #{fileId} )
+	</insert>
+	
+	<update id="updateTagMusic" parameterType="tagMusic"> 
+		UPDATE tag_music_tb SET tag_name = #{tagName} WHERE file_id = #{fileId}
+	</update>
+
+	<delete id="deleteTagMusic" parameterType="int">
+		DELETE FROM tag_music_tb WHERE file_id = #{fileId}
+	</delete>
+
+	<select id="getTagMusicByKey" parameterType="String" resultMap="tagMusic">
+		SELECT * FROM tag_music_tb WHERE tag_name like '%${key}%'
+	</select>
+
+	<select id="getTagMusicByFile" parameterType="int" resultMap="tagMusic">
+		SELECT * FROM tag_music_tb WHERE file_id = #{fileId}
+	</select>	
+	
+</mapper>

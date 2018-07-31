@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lectopia.tsop.mapper.MusicMapper">
+	<resultMap type="com.lectopia.tsop.dto.MusicDTO" id="Music">
+		<id property="fileId" column="file_id"/>
+		<id property="title" column="title"/>
+		<id property="intro" column="intro" />
+		<id property="regDate" column="regdate" />
+		<id property="genreId" column="genre_id"/>
+		<id property="visibility" column="visibility" />
+		<id property="downloadAccept" column="download_accept" />
+	</resultMap>
+	
+	<resultMap type="com.lectopia.tsop.dto.TagMusicDTO" id="tagMusic">
+		<id property="fileId" column="file_id"/>
+		<id property="tagName" column="tag_name"/>
+	</resultMap>
+			
+	<insert id="addMusic" parameterType="Music">
+		INSERT INTO music_tb 
+		VALUES( #{fileId}, #{genreId}, #{title}, #{intro}, sysdate, #{visibility}, #{downloadAccept})
+	</insert>
+	
+	<update id="updateMusic" parameterType="Music">
+		UPDATE music_tb 
+		SET title = #{title}, intro = #{intro}, genre_id = #{genreId}, visibility = #{visibility}, download_accept = #{downloadAccept}
+		WHERE file_id = #{fileId}
+	</update>
+
+	<delete id="deleteMusic" parameterType="int">
+		DELETE FROM music_tb 
+		WHERE file_id = #{fileId}
+	</delete>
+
+	<select id="getMusic" parameterType="int" resultMap="Music">
+		SELECT * 
+		FROM music_tb 
+		WHERE file_id = #{fileId}
+	</select>
+
+
+	<select id="getMusicTag" parameterType="int" resultMap="tagMusic">
+		SELECT file_id, tag_name
+		FROM music_tb LEFT OUTER JOIN tag_music_tb ON file_id
+		WHERE file_id = #{fileId}
+	</select>
+	
+	<select id="getAllMusic" resultMap="Music">
+		SELECT *
+		FROM music_tb
+	</select>
+
+	
+</mapper>

@@ -14,6 +14,16 @@ public class MusicDTO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public MusicDTO(int fileId, String title, String intro, int genreId, boolean visibility,
+			boolean downloadAccept) {
+		super();
+		this.fileId = fileId;
+		this.title = title;
+		this.intro = intro;
+		this.genreId = genreId;
+		this.visibility = visibility;
+		this.downloadAccept = downloadAccept;
+	}
 	public MusicDTO(int fileId, String title, String intro, Date regDate, int genreId, boolean visibility,
 			boolean downloadAccept) {
 		super();
